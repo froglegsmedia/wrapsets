@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WrapSets</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #1a1714;
+    --warm-white: #f5f2ec;
+    --cream: #ede9e0;
+    --gold: #c9a84c;
+    --gold-dark: #9e7b2f;
+    --gold-light: #f0d98a;
+    --muted: #7a7268;
+    --border: rgba(26,23,20,0.12);
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--warm-white);
+    color: var(--black);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4vw;
+    background: rgba(245,242,236,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+  .nav-cta {
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--black);
+    color: var(--warm-white);
+    padding: 0.6rem 1.5rem;
+    border-radius: 2px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold-dark); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 7rem 4vw 5rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: 10%;
+    width: 55vw;
+    height: 80vh;
+    background: var(--cream);
+    clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    color: var(--black);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-dark);
+  }
+  .hero-sub {
+    font-size: 1.125rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--black);
+    color: var(--warm-white);
+    padding: 0.9rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-dark); }
+  .btn-secondary {
+    color: var(--black);
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 2px;
+    letter-spacing: 0.01em;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--gold-dark); }
+
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .hero-stat {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 2px;
+  }
+  .hero-stat:first-child { grid-column: span 2; background: var(--black); color: var(--warm-white); }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .hero-stat:first-child .stat-num { color: var(--gold-light); }
+  .stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  .hero-stat:first-child .stat-label { color: rgba(245,242,236,0.5); }
+  .stat-label-muted { color: var(--muted); }
+  .icon-box {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .icon-box svg { width: 28px; height: 28px; color: var(--gold-dark); }
+  .icon-box-label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+
+  /* SECTION STYLES */
+  section { padding: 6rem 4vw; }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 1.25rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* SERVICES */
+  .services { background: var(--cream); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 3.5rem;
+    border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--cream);
+    padding: 2rem 1.75rem;
+    transition: background 0.25s;
+  }
+  .service-card:hover { background: var(--warm-white); }
+  .service-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 1.25rem;
+    color: var(--gold-dark);
+  }
+  .service-name {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .service-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* HOW IT WORKS */
+  .process-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 3.5rem;
+    position: relative;
+  }
+  .process-row::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .process-step { padding: 0 1.5rem; text-align: center; position: relative; }
+  .step-num {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--black);
+    color: var(--gold-light);
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.25rem;
+    position: relative; z-index: 1;
+  }
+  .step-title { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* WHY */
+  .why { background: var(--black); color: var(--warm-white); }
+  .why .section-label { color: var(--gold); }
+  .why .section-title { color: var(--warm-white); }
+  .why .section-sub { color: rgba(245,242,236,0.55); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .why-card {
+    border: 1px solid rgba(245,242,236,0.12);
+    padding: 2rem;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+  .why-card:hover { border-color: rgba(201,168,76,0.4); }
+  .why-card-title { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--warm-white); }
+  .why-card-desc { font-size: 0.9rem; color: rgba(245,242,236,0.5); line-height: 1.7; font-weight: 300; }
+  .why-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  /* MARKETS */
+  .markets-flex {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+  .market-pill {
+    font-size: 0.875rem;
+    padding: 0.6rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .market-pill.active {
+    background: var(--black);
+    color: var(--gold-light);
+    border-color: var(--black);
+  }
+
+  /* LOCATIONS */
+  .locations { background: var(--cream); }
+  .locations-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .location-item {
+    background: var(--cream);
+    padding: 1.75rem 1.5rem;
+  }
+  .location-city {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+  }
+  .location-status {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .status-active { color: #3B6D11; }
+  .status-soon { color: var(--gold-dark); }
+
+  /* CTA */
+  .cta-section {
+    background: var(--gold);
+    padding: 5rem 4vw;
+    text-align: center;
+  }
+  .cta-section .section-title { color: var(--black); margin-bottom: 1rem; }
+  .cta-section p { color: rgba(26,23,20,0.65); font-size: 1rem; margin-bottom: 2.5rem; font-weight: 300; }
+  .btn-cta {
+    background: var(--black);
+    color: var(--gold-light);
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    color: rgba(245,242,236,0.4);
+    padding: 2.5rem 4vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--warm-white); }
+  .footer-logo span { color: var(--gold); }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .hero::before { display: none; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .process-row { grid-template-columns: 1fr 1fr; }
+    .process-row::before { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .locations-list { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 600px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .locations-list { grid-template-columns: 1fr; }
+    .hero-visual { grid-template-columns: 1fr; }
+    .hero-visual .hero-stat:first-child { grid-column: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Wrap<span>Sets</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#why">Why us</a></li>
+    <li><a href="#markets">Markets</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get a quote</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Film & TV Production Services</div>
+    <h1 class="hero-title">
+      When the<br>cameras stop,<br><em>we start.</em>
+    </h1>
+    <p class="hero-sub">
+      WrapSets handles the full post-shoot wrap — striking sets, cataloging assets, warehousing, and renting them back to your next production.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request a wrap quote</a>
+      <a href="#services" class="btn-secondary">See all services</a>
+    </div>
+  </div>
+  <div class="hero-visual fade-up">
+    <div class="hero-stat">
+      <div class="stat-num">One vendor.</div>
+      <div class="stat-label">Strike, store, catalog & re-rent — all handled.</div>
+    </div>
+    <div class="icon-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+      </svg>
+      <div class="icon-box-label">Asset catalog</div>
+    </div>
+    <div class="icon-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+      </svg>
+      <div class="icon-box-label">Cartage</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num" style="font-size:1.75rem; color:var(--gold-dark);">LA → ATL → NYC</div>
+      <div class="stat-label stat-label-muted">Serving major production hubs</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services fade-up" id="services">
+  <div class="section-label">What we do</div>
+  <h2 class="section-title">Full-service wrap,<br>from strike to re-rent</h2>
+  <p class="section-sub">Every service your production needs once the shoot ends — handled by one specialized team.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>
+      </svg>
+      <div class="service-name">Set Strike & Removal</div>
+      <p class="service-desc">Skilled crews dismantle flats, walls, platforms, scenic builds, and set dressing — safely, quickly, on your schedule.</p>
+    </div>
+    <div class="service-card">
+      <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h4.5v4.5h-4.5v-4.5z"/>
+      </svg>
+      <div class="service-name">Inventory & Cataloging</div>
+      <p class="service-desc">Every item tagged, photographed, and entered into a searchable digital catalog — so you (and future productions) can find it instantly.</p>
+    </div>
+    <div class="service-card">
+      <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+      </svg>
+      <div class="service-name">Warehouse Storage</div>
+      <p class="service-desc">Organized by category — walls, doors, props, furniture, specialty builds. Everything stored clean and accessible in our LA facility.</p>
+    </div>
+    <div class="service-card">
+      <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9"/>
+      </svg>
+      <div class="service-name">Rental Program</div>
+      <p class="service-desc">Rent reclaimed set materials back to film, TV, commercial, and event productions. High-quality assets at a fraction of build cost.</p>
+    </div>
+    <div class="service-card">
+      <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+      </svg>
+      <div class="service-name">Cartage & Logistics</div>
+      <p class="service-desc">On-demand trucking from production sites to our warehouse, and delivery to new productions anywhere in our service area.</p>
+    </div>
+    <div class="service-card">
+      <svg class="service-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.893 13.393l-1.135-1.135a2.252 2.252 0 01-.421-.585l-1.08-2.16a.414.414 0 00-.663-.107.827.827 0 01-.812.21l-1.273-.363a.89.89 0 00-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 01-1.81 1.025 1.055 1.055 0 01-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 01-1.383-2.46l.007-.042a2.25 2.25 0 01.29-.787l.09-.15a2.25 2.25 0 012.37-1.048l1.178.236a1.125 1.125 0 001.302-.795l.208-.73a1.125 1.125 0 00-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 01-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 01-1.458-1.137l1.411-2.353a2.25 2.25 0 00.286-.76m11.928 9.869A9 9 0 008.965 3.525m11.928 9.868A9 9 0 118.965 3.525"/>
+      </svg>
+      <div class="service-name">Waste & Recycling</div>
+      <p class="service-desc">We sort what's reusable from what's scrap, responsibly disposing of and recycling materials that can't be given a second life.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="fade-up">
+  <div class="section-label">The process</div>
+  <h2 class="section-title">Four steps, zero headaches</h2>
+  <p class="section-sub">From the moment a shoot wraps to the moment your next production calls — we handle every step.</p>
+  <div class="process-row">
+    <div class="process-step">
+      <div class="step-num">1</div>
+      <div class="step-title">You call wrap</div>
+      <p class="step-desc">Contact us before or during production. We'll schedule your strike crew around your timeline.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">2</div>
+      <div class="step-title">We strike the set</div>
+      <p class="step-desc">Our crew dismantles, loads, and transports everything — walls, props, furniture — to our warehouse.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">3</div>
+      <div class="step-title">Assets get cataloged</div>
+      <p class="step-desc">Every piece is photographed, tagged, and added to our searchable inventory database.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">4</div>
+      <div class="step-title">Assets earn revenue</div>
+      <p class="step-desc">Items rent out to future productions — generating ongoing income on materials you'd otherwise discard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY WRAPSETS -->
+<section class="why fade-up" id="why">
+  <div class="section-label">Why WrapSets</div>
+  <h2 class="section-title">The smarter way<br>to close a production</h2>
+  <p class="section-sub">No more juggling multiple vendors for strike, storage, and disposal. No more wasted materials.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-badge">End-to-end</div>
+      <div class="why-card-title">One vendor for everything</div>
+      <p class="why-card-desc">Strike, cartage, storage, cataloging, rental — managed by a single team. Fewer calls, fewer invoices, fewer problems on a tight wrap schedule.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-badge">Revenue</div>
+      <div class="why-card-title">Turn scrap into income</div>
+      <p class="why-card-desc">Materials that would otherwise be landfilled become rental inventory. Productions that use our rental library spend less on new builds — and so do you on your next project.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-badge">Sustainable</div>
+      <div class="why-card-title">A circular set economy</div>
+      <p class="why-card-desc">Streaming growth means more productions and more waste. WrapSets closes the loop — responsible recycling and reuse built into every job we take.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-badge">Speed</div>
+      <div class="why-card-title">Fast crews, tight deadlines</div>
+      <p class="why-card-desc">We specialize in wrap — it's all we do. Our crews are trained for efficient, careful strikes that keep stages clear and your budget on track.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section id="markets" class="fade-up">
+  <div class="section-label">Who we serve</div>
+  <h2 class="section-title">Built for every type of production</h2>
+  <div class="markets-flex">
+    <div class="market-pill active">Film studios</div>
+    <div class="market-pill active">TV productions</div>
+    <div class="market-pill active">Streaming platforms</div>
+    <div class="market-pill">Commercial shoots</div>
+    <div class="market-pill">Art departments</div>
+    <div class="market-pill">Set decorators</div>
+    <div class="market-pill">Event companies</div>
+    <div class="market-pill">Prop houses</div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section class="locations fade-up">
+  <div class="section-label">Where we operate</div>
+  <h2 class="section-title">Starting in LA, growing fast</h2>
+  <div class="locations-list">
+    <div class="location-item">
+      <div class="location-city">Los Angeles</div>
+      <div class="location-status status-active">Now open</div>
+    </div>
+    <div class="location-item">
+      <div class="location-city">Atlanta</div>
+      <div class="location-status status-soon">Coming soon</div>
+    </div>
+    <div class="location-item">
+      <div class="location-city">New York</div>
+      <div class="location-status status-soon">Coming soon</div>
+    </div>
+    <div class="location-item">
+      <div class="location-city">Vancouver</div>
+      <div class="location-status status-soon">In planning</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2 class="section-title">Ready to wrap smarter?</h2>
+  <p>Tell us about your production. We'll put together a custom quote for strike, storage, and everything in between.</p>
+  <a href="mailto:hello@wrapsets.com" class="btn-cta">Get in touch</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Wrap<span>Sets</span></div>
+  <div>Los Angeles, CA · hello@wrapsets.com</div>
+  <div>© 2026 WrapSets. All rights reserved.</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
